@@ -8,6 +8,7 @@
 		"libs/modules/promise/promise.js"
 	],
 	"game": [
+		"bin-debug/Circle.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js"
