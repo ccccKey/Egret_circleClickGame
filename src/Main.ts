@@ -42,6 +42,8 @@ class Main extends egret.DisplayObjectContainer {
     private timer: egret.Timer;
     private color: number;
     private clickCircle: Circle;
+    private widthNum:number = 6;
+    private heightNum:number = 6;
 
     private onAddToStage(event: egret.Event) {
         var stageW: number = this.stage.stageWidth;
@@ -81,8 +83,8 @@ class Main extends egret.DisplayObjectContainer {
 
         var radius: number = 50;
         var circleNum: number = 0;
-        for (var i: number = 0; i < 6; i++) {
-            for (var j: number = 0; j < 6; j++) {
+        for (var i: number = 0; i < this.widthNum; i++) {
+            for (var j: number = 0; j < this.heightNum; j++) {
                 circleNum++;
                 var tempx: number = 110 + radius * 2 * j;
                 var tempy: number = 100 + radius * 2 * i;
@@ -94,7 +96,7 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private count: number = 0;
-    private score:number = 0;
+    private score: number = 0;
     private touchNum: number = 0;
     private onClickCircle(e: any): void {
         if (this.clickCircle) {
@@ -127,6 +129,10 @@ class Main extends egret.DisplayObjectContainer {
         }
 
         ++this.count;
+        if (this.count >= this.widthNum * this.heightNum){
+            this.timer.stop();
+            this.gameOver();
+        }
     }
 
     private onTimer(e: egret.TimerEvent): void {
@@ -134,6 +140,10 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private onTimerComplete(e: egret.TimerEvent): void {
+        this.gameOver();
+    }
+
+    private gameOver(): void {
         this.textDes.text = " 这不是极限,刷新再来一次! ";
         this.removeEventListener(Circle.Event_Click, this.onClickCircle, this);
 

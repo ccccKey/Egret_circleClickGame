@@ -44,40 +44,6 @@ class Circle extends egret.Sprite {
 	private onTouch(e:egret.TouchEvent):void{
 		var par = this.parent;
 		par.dispatchEventWith(Circle.Event_Click, false, this);
-
-		// this.touchEnabled = !1;
-		// var tween:egret.Tween = egret.Tween.get(this);
-		// tween.to({alpha:0.1}, 500, egret.Ease.sineOut);
-		// tween.call(function(){
-		// 	this.visible = !1;
-		// 	par.removeChild(this);
-		// 	this.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
-		// }, this);
-
-		// var circleList:Circle[] = [];
-		// var tweenList:egret.Tween[] = [];
-		// var radius:number = this.shaper * 0.5;
-
-		// var tempx:number;
-		// var tempy:number;
-		// var tempr:number;
-
-		// var g:number = 0;
-		// for(var i:number = 0;i<2;i++){
-		// 	for(var t:number = 0;t<2;t++){
-		// 		tempx = this.shapex - this.shaper + radius * 2 * t;
-		// 		tempy = this.shapey - this.shaper + radius * 2 * i;
-		// 		circleList[g] = new Circle(tempx, tempy, radius);
-		// 		circleList[g].alpha = 0.1;
-		// 		circleList[g].scaleX = 0.8;
-		// 		circleList[g].scaleY = 0.8;
-		// 		par.addChild(circleList[g]);
-		// 		tweenList[g] = egret.Tween.get(circleList[g]);
-		// 		tweenList[g].to({alpha : 1, scaleX : 1, scaleY : 1}, 1000, egret.Ease.sineIn);
-
-		// 		g++;
-		// 	}
-		// }
 	}
 
 	//清除圆

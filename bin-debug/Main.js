@@ -40,6 +40,8 @@ var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         var _this = _super.call(this) || this;
+        _this.widthNum = 6;
+        _this.heightNum = 6;
         _this.count = 0;
         _this.score = 0;
         _this.touchNum = 0;
@@ -77,8 +79,8 @@ var Main = (function (_super) {
         this.timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onTimerComplete, this);
         var radius = 50;
         var circleNum = 0;
-        for (var i = 0; i < 6; i++) {
-            for (var j = 0; j < 6; j++) {
+        for (var i = 0; i < this.widthNum; i++) {
+            for (var j = 0; j < this.heightNum; j++) {
                 circleNum++;
                 var tempx = 110 + radius * 2 * j;
                 var tempy = 100 + radius * 2 * i;
@@ -117,11 +119,17 @@ var Main = (function (_super) {
             this.touchNum = 0;
         }
         ++this.count;
+        if (this.count >= this.widthNum * this.heightNum) {
+            this.timer.stop();
+        }
     };
     Main.prototype.onTimer = function (e) {
         this.textTimer.text = " 倒计时 :" + (this.timer.repeatCount - this.timer.currentCount);
     };
     Main.prototype.onTimerComplete = function (e) {
+        this.gameOver();
+    };
+    Main.prototype.gameOver = function () {
         this.textDes.text = " 这不是极限,刷新再来一次! ";
         this.removeEventListener(Circle.Event_Click, this.onClickCircle, this);
         this.count = 0;
