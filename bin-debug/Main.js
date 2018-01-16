@@ -41,6 +41,7 @@ var Main = (function (_super) {
     function Main() {
         var _this = _super.call(this) || this;
         _this.count = 0;
+        _this.touchNum = 0;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         _this.addEventListener(Circle.Event_Click, _this.onClickCircle, _this);
         return _this;
@@ -74,23 +75,35 @@ var Main = (function (_super) {
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
         this.timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onTimerComplete, this);
         var radius = 50;
-        for (var i = 0; i < 4; i++) {
-            for (var j = 0; j < 4; j++) {
-                var tempx = 150 + radius * 2 * j;
-                var tempy = 140 + radius * 2 * i;
+        for (var i = 0; i < 6; i++) {
+            for (var j = 0; j < 6; j++) {
+                var tempx = 110 + radius * 2 * j;
+                var tempy = 100 + radius * 2 * i;
                 var circle = new Circle(tempx, tempy, radius);
                 this.addChild(circle);
+                // this.circles.push(circle);
             }
         }
     };
     Main.prototype.onClickCircle = function (e) {
         if (this.count == 0) {
-            this.color = e.data;
+            this.color = e.data.color;
             this.textCount.text = " 分数 :" + (++this.count);
             this.timer.start();
         }
-        else if (this.color == e.data) {
+        else if (this.color == e.data.color) {
             this.textCount.text = " 分数 :" + (++this.count);
+        }
+        ++this.touchNum;
+        if (this.touchNum == 1) {
+            this.clickCircle = e;
+        }
+        else if (this.touchNum == 2) {
+            this.clickCircle.clearCircle();
+            e.clearCircle();
+        }
+        else {
+            this.touchNum = 0;
         }
     };
     Main.prototype.onTimer = function (e) {
