@@ -36,17 +36,16 @@ class Main extends egret.DisplayObjectContainer {
         this.addEventListener(Circle.Event_Click, this.onClickCircle, this);
     }
 
-    private textCount:egret.TextField;
-    private textTimer:egret.TextField;
-    private textDes:egret.TextField;
-    private timer:egret.Timer;
-    private color:number;
-    // private circles:Array<Circle>;
-    private clickCircle:Circle;
+    private textCount: egret.TextField;
+    private textTimer: egret.TextField;
+    private textDes: egret.TextField;
+    private timer: egret.Timer;
+    private color: number;
+    private clickCircle: Circle;
 
     private onAddToStage(event: egret.Event) {
-        var stageW:number = this.stage.stageWidth;
-        var stageH:number = this.stage.stageHeight;
+        var stageW: number = this.stage.stageWidth;
+        var stageH: number = this.stage.stageHeight;
 
         var bg = new egret.Shape();
         bg.graphics.beginFill(0xffffff);
@@ -56,16 +55,16 @@ class Main extends egret.DisplayObjectContainer {
 
         this.textCount = new egret.TextField;
         this.textCount.textColor = 0xffffff;
-        this.textCount.y = 530;
+        this.textCount.y = 630;
         this.textCount.text = " 分数 :0";
 
         this.textTimer = new egret.TextField;
         this.textTimer.textColor = 0xffffff;
-        this.textTimer.y = 620;
+        this.textTimer.y = 720;
         this.textTimer.text = " 倒计时 ";
 
         this.textDes = new egret.TextField;
-        this.textDes.y = 700;
+        this.textDes.y = 800;
         this.textDes.text = " 点击第一个颜色开始 ";
 
         this.textCount.textAlign = this.textTimer.textAlign = this.textDes.textAlign = egret.HorizontalAlign.CENTER;
@@ -80,47 +79,66 @@ class Main extends egret.DisplayObjectContainer {
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
         this.timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onTimerComplete, this);
 
-        var radius:number = 50;
-        for(var i:number = 0;i<6;i++){
-            for(var j:number = 0;j<6;j++){
-                var tempx:number = 110 + radius* 2 * j;
-                var tempy:number = 100 + radius* 2 * i;
-                var circle:Circle = new Circle(tempx, tempy, radius);
+        var radius: number = 50;
+        var circleNum: number = 0;
+        for (var i: number = 0; i < 6; i++) {
+            for (var j: number = 0; j < 6; j++) {
+                circleNum++;
+                var tempx: number = 110 + radius * 2 * j;
+                var tempy: number = 100 + radius * 2 * i;
+                var circle: Circle = new Circle(tempx, tempy, radius);
+                circle.circleName = "circle" + circleNum;
                 this.addChild(circle);
-                // this.circles.push(circle);
             }
         }
     }
 
-    private count:number = 0;
-    private touchNum:number = 0;
-    private onClickCircle(e:any):void{
-        if(this.count == 0){
-            this.color = e.data.color;
-            this.textCount.text = " 分数 :" + (++this.count);
+    private count: number = 0;
+    private score:number = 0;
+    private touchNum: number = 0;
+    private onClickCircle(e: any): void {
+        if (this.clickCircle) {
+            if (this.clickCircle.circleName == e.data.circleName) {
+                return;
+            }
+        }
+
+        if (this.count == 0) {
+            this.textCount.text = " 分数 :0";
             this.timer.start();
-        }else if(this.color == e.data.color){
-            this.textCount.text = " 分数 :" + (++this.count);
+        } else {
+            if (this.clickCircle) {
+                if (this.clickCircle.color == e.data.color) {
+                    this.score++;
+                    this.textCount.text = " 分数 :" + this.score;
+                }
+            }
         }
 
         ++this.touchNum;
-        if(this.touchNum == 1){
-            this.clickCircle = e;
-        }else if(this.touchNum == 2){
+        if (this.touchNum == 1) {
+            this.clickCircle = e.data;
+        } else if (this.touchNum == 2) {
             this.clickCircle.clearCircle();
-            e.clearCircle();
-        }else{
+            e.data.clearCircle();
+
+            this.clickCircle = null;
             this.touchNum = 0;
         }
+
+        ++this.count;
     }
 
-    private onTimer(e:egret.TimerEvent):void{
-        this.textTimer.text = " 倒计时 :" + (this.timer.repeatCount-this.timer.currentCount);
+    private onTimer(e: egret.TimerEvent): void {
+        this.textTimer.text = " 倒计时 :" + (this.timer.repeatCount - this.timer.currentCount);
     }
 
-    private onTimerComplete(e:egret.TimerEvent):void{
+    private onTimerComplete(e: egret.TimerEvent): void {
         this.textDes.text = " 这不是极限,刷新再来一次! ";
         this.removeEventListener(Circle.Event_Click, this.onClickCircle, this);
+
+        this.count = 0;
+        this.score = 0;
     }
 
 }
