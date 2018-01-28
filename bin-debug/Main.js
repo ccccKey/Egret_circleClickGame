@@ -121,6 +121,7 @@ var Main = (function (_super) {
         ++this.count;
         if (this.count >= this.widthNum * this.heightNum) {
             this.timer.stop();
+            this.gameOver();
         }
     };
     Main.prototype.onTimer = function (e) {
